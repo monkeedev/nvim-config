@@ -43,11 +43,9 @@ local function smart_goto_definition()
 
     local current_uri = vim.uri_from_bufnr(0)
 
-    -- 1. Open a vertical split if the reference is in another file
     if uri ~= current_uri then
       vim.cmd('tabnew')
     end
-    -- 2. If it's in the same file, it stays in the same window automatically
 
     -- Jump to the target location
     vim.lsp.util.jump_to_location(target, "utf-8")
