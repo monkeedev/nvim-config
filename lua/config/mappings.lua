@@ -27,7 +27,7 @@ vim.lsp.buf.hover = function()
     })
 end
 
--- Custom smart Go-to-Definition function
+-- Custom smart Go-to-Definition function with tab reuse
 local function smart_goto_definition()
   local params = vim.lsp.util.make_position_params()
   
@@ -43,7 +43,33 @@ local function smart_goto_definition()
 
     local current_uri = vim.uri_from_bufnr(0)
 
-    if uri ~= current_uri then
+    -- If it's in the same file, stay in the current window/tab
+    if uri == current_uri then
+      vim.lsp.util.jump_to_location(target, "utf-8")
+      return
+    end
+
+    -- Check if the target file is already open in any existing tab/window
+    local found_tab = nil
+    local found_win = nil
+
+    for _, tab in ipairs(vim.api.nvim_list_tabpages()) do
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+        local bufnr = vim.api.nvim_win_get_buf(win)
+        if vim.uri_from_bufnr(bufnr) == uri then
+          found_tab = tab
+          found_win = win
+          break
+        end
+      end
+      if found_tab then break end
+    end
+
+    -- Switch to the existing tab/window if found, otherwise open a new tab
+    if found_tab and found_win then
+      vim.api.nvim_set_current_tabpage(found_tab)
+      vim.api.nvim_set_current_win(found_win)
+    else
       vim.cmd('tabnew')
     end
 
@@ -57,7 +83,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
     vim.keymap.set('n', 'gd', smart_goto_definition, { 
       buffer = event.buf, 
-      desc = "Smart Go to Definition/Reference", 
+      desc = "Smart Go to Definition (Reuse Tab)", 
       silent = true, 
       noremap = true 
     })
