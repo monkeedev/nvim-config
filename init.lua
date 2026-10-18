@@ -34,11 +34,11 @@ require('nvim-treesitter').install {
   'css', 
   'html', 
   'scss', 
+  'jsx', 
   'tsx', 
   'typescript', 
   'javascript' 
 }
-
 
 require('mason').setup()
 require('mason-lspconfig').setup()
@@ -77,13 +77,3 @@ require('lualine').setup({
 require("luasnip.loaders.from_vscode").load {
   exclude = { "javascript", "tsx", "typescript" }
 }
-
--- require('ufo').setup({
---   provider_selector = function(bufnr, filetype, buftype)
---     return { 'lsp', 'indent' }
---   end
--- })
---
--- -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
--- vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
--- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)

@@ -28,11 +28,6 @@ return {
     },
     config = function()
       local has_words_before = function()
-        -- local cursor = vim.api.nvim_win_get_cursor(0)
-        -- local line, col = cursor[1], cursor[2]
-        -- if col == 0 then return false end
-        -- local line_text = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
-        -- return line_text:sub(col, col):match("%s") == nil
         unpack = unpack or table.unpack
         local line, col = unpack(vim.api.nvim_win_get_cursor(0))
         if col == 0 then return false end
@@ -48,7 +43,6 @@ return {
         sources = cmp.config.sources {
           { name = "nvim_lsp", priority = 1000},
           { name = "luasnip", priority = 750, option = { show_autosnippets = true } },
-          -- { name = "buffer", priority = 250, keyword_length = 3},
           { name = "path", priority = 250 },
         },
         mapping = cmp.mapping.preset.insert({

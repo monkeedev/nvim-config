@@ -37,5 +37,9 @@ vim.o.foldenable = true
 vim.opt.clipboard = "unnamedplus"
 
 -- Diagnostic
--- vim.diagnostic.config({ virtual_lines = true })
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({ 
+  virtual_text = false,
+  virtual_lines = true,
+})
+
+
