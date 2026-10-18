@@ -24,30 +24,52 @@ return {
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-buffer",
+      "saadparwaiz1/cmp_luasnip"
     },
     config = function()
+      local has_words_before = function()
+        -- local cursor = vim.api.nvim_win_get_cursor(0)
+        -- local line, col = cursor[1], cursor[2]
+        -- if col == 0 then return false end
+        -- local line_text = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+        -- return line_text:sub(col, col):match("%s") == nil
+        unpack = unpack or table.unpack
+        local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+        if col == 0 then return false end
+        local line_text = vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]
+        -- Check if the character right before the cursor is NOT whitespace
+        return line_text:sub(col, col):match("%s") == nil
+      end
+
       local cmp = require('cmp')
       local luasnip = require('luasnip')
+
       local opts = {
         sources = cmp.config.sources {
-          { name = "nvim_lsp", },
-          { name = "path", },
-          { name = "buffer", },
-          { name = "luasnip", option = { show_autosnippets = true } }
+          { name = "nvim_lsp", priority = 1000},
+          { name = "luasnip", priority = 750, option = { show_autosnippets = true } },
+          -- { name = "buffer", priority = 250, keyword_length = 3},
+          { name = "path", priority = 250 },
         },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
-          ["<tab>"] = cmp.mapping(function(original)
+          ["<Tab>"] = cmp.mapping(function(original)
             if cmp.visible() then
               cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
               luasnip.expand_or_jump()
+            elseif vim.snippet.active({ direction = 1 }) then
+              -- Jump forward in snippets if active
+              vim.snippet.jump(1)
+            elseif has_words_before() then
+              -- If we are typing right after characters (like 'arr.'), trigger completion
+              cmp.complete()
             else
-              print("fallback")
               original()
             end
           end, {"i", "s"}),
-          ["<S-tab>"] = cmp.mapping(function(original)
+
+          ["<S-Tab>"] = cmp.mapping(function(original)
             if cmp.visible() then
               cmp.select_prev_item()
             elseif luasnip.expand_or_jumpable() then
@@ -57,6 +79,13 @@ return {
             end
           end, {"i", "s"}),
         }),
+        formatting = {
+          format = function(entry, vim_item)
+            -- Optional: Limit the length of completion item labels to keep the menu clean
+            vim_item.abbr = string.sub(vim_item.abbr, 1, 40)
+            return vim_item
+          end
+        },
         experimental = {
           ghost_text = true
         }
