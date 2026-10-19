@@ -10,9 +10,6 @@ vim.keymap.set('n', '<leader>s', ':split<CR>');
 vim.keymap.set('n', '<C-j>', ':botright 10split<CR>:terminal<CR>');
 vim.keymap.set('n', '<C-c>', ':hide<CR>');
 vim.keymap.set('n', '<Esc>', ':nohl<CR>');
--- vim.keymap.set('n', 'gd', '<cmd>tab split | lua vim.lsp.buf.definition()<CR>', { desc = "Go to Definition", silent = true, noremap = true })
--- vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { desc = "Go to Declaration", silent = true, noremap = true })
--- vim.keymap.set('n', 'gr', vim.lsp.buf.references, { desc = "Go to Reference" })
 
 -- Exit terminal mode
 vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], {noremap = true})
@@ -37,7 +34,7 @@ local function smart_goto_definition()
     end
 
     -- Handle single location, list of locations, or LocationLinks
-    local target = vim.tbl_islist(result) and result[1] or result
+    local target = vim.islist(result) and result[1] or result
     local uri = target.targetUri or target.uri
     if not uri then return end
 
@@ -45,7 +42,8 @@ local function smart_goto_definition()
 
     -- If it's in the same file, stay in the current window/tab
     if uri == current_uri then
-      vim.lsp.util.jump_to_location(target, "utf-8")
+      -- vim.lsp.util.jump_to_location(target, "utf-8")
+      vim.lsp.util.show_document(target, "utf-8", {focus = true})
       return
     end
 
@@ -74,9 +72,11 @@ local function smart_goto_definition()
     end
 
     -- Jump to the target location
-    vim.lsp.util.jump_to_location(target, "utf-8")
+    -- vim.lsp.util.jump_to_location(target, "utf-8")
+    vim.lsp.util.show_document(target, "utf-8", {focus = true})
   end)
 end
+
 
 -- Bind it using LspAttach so it overrides LazyVim's defaults correctly
 vim.api.nvim_create_autocmd("LspAttach", {

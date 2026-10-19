@@ -1,19 +1,19 @@
 return {
   {
     "neovim/nvim-lspconfig",
-    -- opts = function(_, opts)
-    --   opts.reuse_win = true
-    --   -- local lsp = extra.name or "vtsls"
-    --   -- local servers = { "tsserver", "ts_ls", "vtsls", "tsgo" }
-    --   -- for _, server in ipairs(servers) do
-    --   --   opts.servers[server] = opts.servers[server] or {}
-    --   --   opts.servers[server].enabled = server == lsp
-    --   -- end
-    -- end,
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    },
   },
   {
     "mason-org/mason.nvim",
-    opts = {},
+    opts = {
+      ensure_installed = {
+        "clangd",
+        "clang-format"
+      }
+    },
   },
   {
     "mason-org/mason-lspconfig.nvim",

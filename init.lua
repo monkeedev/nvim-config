@@ -1,11 +1,21 @@
 require("config.lazy")
 require("config.mappings")
 
--- vim.lsp.config('ts_ls', {
---   settings = {
---     ['ts_ls'] = {}
---   }
--- })
+-- Silence the specific position encoding message
+local notify_original = vim.notify
+vim.notify = function(msg, ...)
+  if
+    msg
+    and (
+      msg:match 'position_encoding param is required'
+      or msg:match 'Defaulting to position encoding of the first client'
+      or msg:match 'multiple different client offset_encodings'
+    )
+  then
+    return
+  end
+  return notify_original(msg, ...)
+end
 
 vim.lsp.config('vtsls', {
   settings = {
@@ -24,11 +34,11 @@ require('nvim-treesitter').install {
   'css', 
   'html', 
   'scss', 
+  'jsx', 
   'tsx', 
   'typescript', 
   'javascript' 
 }
-
 
 require('mason').setup()
 require('mason-lspconfig').setup()
@@ -67,13 +77,3 @@ require('lualine').setup({
 require("luasnip.loaders.from_vscode").load {
   exclude = { "javascript", "tsx", "typescript" }
 }
-
--- require('ufo').setup({
---   provider_selector = function(bufnr, filetype, buftype)
---     return { 'lsp', 'indent' }
---   end
--- })
---
--- -- Using ufo provider need remap `zR` and `zM`. If Neovim is 0.6.1, remap yourself
--- vim.keymap.set('n', 'zR', require('ufo').openAllFolds)
--- vim.keymap.set('n', 'zM', require('ufo').closeAllFolds)

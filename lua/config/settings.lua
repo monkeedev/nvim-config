@@ -28,14 +28,20 @@ vim.o.shiftwidth = 2
 vim.cmd("language C.UTF-8")
 
 -- Folding
-vim.o.foldcolumn = '1' -- '0' is not bad
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
+vim.opt.foldenable = true
+
+vim.opt.foldlevel = 99 
+vim.opt.foldlevelstart = 99
+
+vim.opt.foldmethod = "indent"
 
 -- Automatically yank text to the system clipboard
 vim.opt.clipboard = "unnamedplus"
 
 -- Diagnostic
--- vim.diagnostic.config({ virtual_lines = true })
-vim.diagnostic.config({ virtual_text = true })
+vim.diagnostic.config({ 
+  virtual_text = false,
+  virtual_lines = true,
+})
+
+
