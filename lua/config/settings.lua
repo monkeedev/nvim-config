@@ -25,7 +25,7 @@ vim.o.expandtab = true
 vim.o.softtabstop = 2
 vim.o.shiftwidth = 2
 
-vim.cmd("language en_US.UTF-8")
+vim.cmd("language C.UTF-8")
 
 -- Folding
 vim.o.foldcolumn = '1' -- '0' is not bad
