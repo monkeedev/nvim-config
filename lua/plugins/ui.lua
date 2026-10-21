@@ -32,12 +32,12 @@ return {
       },
     },
   },
-	{
-		"brenoprata10/nvim-highlight-colors",
-		ft = { "css" },
-		config = true,
-		lazy = true,
-	},
+  {
+    "brenoprata10/nvim-highlight-colors",
+    ft = { "css" },
+    config = true,
+    lazy = true,
+  },
   -- Formatter
   {
     "stevearc/conform.nvim",
@@ -45,8 +45,8 @@ return {
     cmd = { "ConformInfo" },
     opts = {
       formatters_by_ft = {
-        cpp = { "clang-format" },
-        c = { "clang-format" },
+        -- cpp = { "clang-format" },
+        -- c = { "clang-format" },
         tsx = { "prettier" },
         ts = { "prettier" },
         jsx = { "prettier" },

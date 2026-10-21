@@ -9,18 +9,18 @@ return {
   {
     "mason-org/mason.nvim",
     opts = {
-      ensure_installed = {
-        "clangd",
-        "clang-format"
-      }
+      -- ensure_installed = {
+      --   "clangd",
+      --   "clang-format"
+      -- }
     },
   },
   {
     "mason-org/mason-lspconfig.nvim",
     opts = {},
     dependencies = {
-        { "mason-org/mason.nvim", opts = {} },
-        "neovim/nvim-lspconfig",
+      { "mason-org/mason.nvim", opts = {} },
+      "neovim/nvim-lspconfig",
     },
   }
 }

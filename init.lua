@@ -5,12 +5,12 @@ require("config.mappings")
 local notify_original = vim.notify
 vim.notify = function(msg, ...)
   if
-    msg
-    and (
-      msg:match 'position_encoding param is required'
-      or msg:match 'Defaulting to position encoding of the first client'
-      or msg:match 'multiple different client offset_encodings'
-    )
+      msg
+      and (
+        msg:match 'position_encoding param is required'
+        or msg:match 'Defaulting to position encoding of the first client'
+        or msg:match 'multiple different client offset_encodings'
+      )
   then
     return
   end
@@ -30,14 +30,14 @@ require('nvim-treesitter').setup {
   install_dir = vim.fn.stdpath('data') .. '/site'
 }
 
-require('nvim-treesitter').install { 
-  'css', 
-  'html', 
-  'scss', 
-  'jsx', 
-  'tsx', 
-  'typescript', 
-  'javascript' 
+require('nvim-treesitter').install {
+  'css',
+  'html',
+  'scss',
+  'jsx',
+  'tsx',
+  'typescript',
+  'javascript'
 }
 
 require('mason').setup()
@@ -65,7 +65,7 @@ require('lualine').setup({
           info  = 'DiagnosticInfo',  -- Changes diagnostics' info color.
           hint  = 'DiagnosticHint',  -- Changes diagnostics' hint color.
         },
-        symbols = {error = 'E', warn = 'W', info = 'I', hint = 'H'},
+        symbols = { error = 'E', warn = 'W', info = 'I', hint = 'H' },
         colored = true,           -- Displays diagnostics status in color if set to true.
         update_in_insert = false, -- Update diagnostics in insert mode.
         always_visible = false,   -- Show diagnostics even if there are none.

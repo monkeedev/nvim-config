@@ -9,7 +9,7 @@ return {
       local ls = require('luasnip')
       ls.setup(opts)
 
-      require('luasnip.loaders.from_snipmate').load({ paths = "./snippets"})
+      require('luasnip.loaders.from_snipmate').load({ paths = "./snippets" })
       require("luasnip.loaders.from_vscode").lazy_load()
 
       ls.filetype_extend("typescript", { "javascript" })
@@ -42,9 +42,20 @@ return {
 
       local opts = {
         sources = cmp.config.sources {
-          { name = "nvim_lsp", priority = 1000},
-          { name = "luasnip", priority = 750, option = { show_autosnippets = true } },
-          { name = "path", priority = 250 },
+          { name = "nvim_lsp", priority = 1000 },
+          { name = "luasnip",  priority = 750, option = { show_autosnippets = true } },
+          { name = "path",     priority = 250 },
+        },
+        -- Add the window configuration here for framed borders
+        -- Explicitly define border characters and highlights
+        window = {
+          completion = cmp.config.window.bordered({
+            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+            winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None",
+          }),
+          documentation = cmp.config.window.bordered({
+            border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
+          }),
         },
         mapping = cmp.mapping.preset.insert({
           ["<CR>"] = cmp.mapping.confirm({ select = true }),
@@ -62,7 +73,7 @@ return {
             else
               original()
             end
-          end, {"i", "s"}),
+          end, { "i", "s" }),
 
           ["<S-Tab>"] = cmp.mapping(function(original)
             if cmp.visible() then
@@ -72,7 +83,7 @@ return {
             else
               original()
             end
-          end, {"i", "s"}),
+          end, { "i", "s" }),
         }),
         formatting = {
           format = function(entry, vim_item)
@@ -89,7 +100,7 @@ return {
     end,
   },
   { "hrsh7th/cmp-nvim-lsp", lazy = true },
-  { "hrsh7th/cmp-path", lazy = true },
-  { "hrsh7th/cmp-buffer", lazy = true },
+  { "hrsh7th/cmp-path",     lazy = true },
+  { "hrsh7th/cmp-buffer",   lazy = true },
 
 }
