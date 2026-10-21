@@ -45,8 +45,8 @@ return {
     cmd = { "ConformInfo" },
     opts = {
       formatters_by_ft = {
-        -- cpp = { "clang-format" },
-        -- c = { "clang-format" },
+        cpp = { "clang-format" },
+        c = { "clang-format" },
         tsx = { "prettier" },
         ts = { "prettier" },
         jsx = { "prettier" },
