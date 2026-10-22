@@ -12,22 +12,22 @@ vim.keymap.set('n', '<C-c>', ':hide<CR>');
 vim.keymap.set('n', '<Esc>', ':nohl<CR>');
 
 -- Exit terminal mode
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], {noremap = true})
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]], { noremap = true })
 
 local hover = vim.lsp.buf.hover
 ---@diagnostic disable-next-line: duplicate-set-field
 vim.lsp.buf.hover = function()
-    return hover({
-        max_width = 100,
-        max_height = 14,
-        border = 'rounded',
-    })
+  return hover({
+    max_width = 100,
+    max_height = 14,
+    border = 'rounded',
+  })
 end
 
 -- Custom smart Go-to-Definition function with tab reuse
 local function smart_goto_definition()
   local params = vim.lsp.util.make_position_params()
-  
+
   vim.lsp.buf_request(0, 'textDocument/definition', params, function(err, result, _, _)
     if err or not result or vim.tbl_isempty(result) then
       return -- Do nothing if the reference/definition is missing
@@ -43,7 +43,7 @@ local function smart_goto_definition()
     -- If it's in the same file, stay in the current window/tab
     if uri == current_uri then
       -- vim.lsp.util.jump_to_location(target, "utf-8")
-      vim.lsp.util.show_document(target, "utf-8", {focus = true})
+      vim.lsp.util.show_document(target, "utf-8", { focus = true })
       return
     end
 
@@ -73,7 +73,7 @@ local function smart_goto_definition()
 
     -- Jump to the target location
     -- vim.lsp.util.jump_to_location(target, "utf-8")
-    vim.lsp.util.show_document(target, "utf-8", {focus = true})
+    vim.lsp.util.show_document(target, "utf-8", { focus = true })
   end)
 end
 
@@ -81,11 +81,21 @@ end
 -- Bind it using LspAttach so it overrides LazyVim's defaults correctly
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(event)
-    vim.keymap.set('n', 'gd', smart_goto_definition, { 
-      buffer = event.buf, 
-      desc = "Smart Go to Definition (Reuse Tab)", 
-      silent = true, 
-      noremap = true 
+    vim.keymap.set('n', 'gd', smart_goto_definition, {
+      buffer = event.buf,
+      desc = "Smart Go to Definition (Reuse Tab)",
+      silent = true,
+      noremap = true
     })
   end,
 })
+
+vim.keymap.set('n', '<leader>rw', vim.lsp.buf.rename, { desc = 'LSP rename variable' })
+
+--
+-- vim.keymap.set(
+--   'n',
+--   '<leader>rw',
+--   ":%s/\\<<C-r>=expand('<cword>')<CR>\\>/<C-r>=expand('<cword>')<CR>/g<Left><Left>",
+--   { desc = 'Rename word under cursor in file' }
+-- )
